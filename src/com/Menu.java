@@ -22,8 +22,8 @@ class Menu extends JFrame implements ActionListener {
     private JRadioButton line;
     private JRadioButton full;
     private ButtonGroup gengp;
-    private JComboBox Read;
-    private JComboBox Write;
+    private JComboBox read;
+    private JComboBox write;
     private JButton close;
     private JButton start;
     private JTextArea tout;
@@ -36,7 +36,7 @@ class Menu extends JFrame implements ActionListener {
     // with default values.
     public Menu() {
         setTitle("Bingo Game");
-        setBounds(300, 90, 900, 400);
+        setBounds(300, 90, 475, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -55,11 +55,11 @@ class Menu extends JFrame implements ActionListener {
         LRead.setLocation(100, 100);
         c.add(LRead);
 
-        Read = new JComboBox(ports);
-        Read.setFont(new Font("Arial", Font.PLAIN, 15));
-        Read.setSize(100, 20);
-        Read.setLocation(250, 100);
-        c.add(Read);
+        read = new JComboBox(ports);
+        read.setFont(new Font("Arial", Font.PLAIN, 15));
+        read.setSize(100, 20);
+        read.setLocation(250, 100);
+        c.add(read);
 
         LWrite = new JLabel("Write Port");
         LWrite.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -67,11 +67,11 @@ class Menu extends JFrame implements ActionListener {
         LWrite.setLocation(100, 150);
         c.add(LWrite);
 
-        Write = new JComboBox(ports);
-        Write.setFont(new Font("Arial", Font.PLAIN, 15));
-        Write.setSize(100, 20);
-        Write.setLocation(250, 150);
-        c.add(Write);
+        write = new JComboBox(ports);
+        write.setFont(new Font("Arial", Font.PLAIN, 15));
+        write.setSize(100, 20);
+        write.setLocation(250, 150);
+        c.add(write);
 
         gender = new JLabel("Game mode");
         gender.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -110,15 +110,6 @@ class Menu extends JFrame implements ActionListener {
         start.setLocation(250, 300);
         start.addActionListener(this);
         c.add(start);
-
-        tout = new JTextArea();
-        tout.setFont(new Font("Arial", Font.PLAIN, 15));
-        tout.setSize(300, 200);
-        tout.setLocation(500, 100);
-        tout.setLineWrap(true);
-        tout.setEditable(false);
-        c.add(tout);
-
         setVisible(true);
     }
 
@@ -126,21 +117,24 @@ class Menu extends JFrame implements ActionListener {
     // to get the action performed
     // by the user and act accordingly
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == close) {
-            String data1;
+        if (e.getSource() == start) {
+            String gameMode;
             if (line.isSelected())
-                data1 = "game mode : line" + "\n";
+                gameMode = "game mode : line" + "\n";
             else
-                data1 = "game mode : full" + "\n";
-            String data2 = "DOB : " + (String) Read.getSelectedItem() + "/" + (String) Write.getSelectedItem() + "\n";
-            tout.setText(data1 + data2);
-            tout.setEditable(false);
+                gameMode = "game mode : full" + "\n";
+            String readPort = (String) read.getSelectedItem();
+            String writePort = (String) write.getSelectedItem();
+            if (readPort != writePort) {
+                BingoGame game = new BingoGame(readPort, writePort, gameMode);
+                game.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                game.setVisible(true);
+                dispose();
+                setVisible(false);
+            }
         }
 
-        else if (e.getSource() == start) {
-            BingoGame game = new BingoGame();
-            game.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            game.setVisible(true);
+        else if (e.getSource() == close) {
             dispose();
             setVisible(false);
         }

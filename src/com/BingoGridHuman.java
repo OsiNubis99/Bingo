@@ -19,10 +19,10 @@ public class BingoGridHuman extends BingoGrid {
      */
     private static final long serialVersionUID = 1L;
 
-    public BingoGridHuman() {
+    public BingoGridHuman(int x) {
         super();
 
-        indentX = 50;
+        indentX = x;
         indentY = 250;
         initializeGrid();
     }
@@ -92,7 +92,7 @@ public class BingoGridHuman extends BingoGrid {
 
                 // highlights the square if it is clicked
                 if (square.getIsClicked()) {
-                    g2.setColor(Color.YELLOW);
+                    g2.setColor(Color.BLUE);
                     g2.fill(square);
                     g2.setColor(Color.BLACK);
                     g2.draw(square);
@@ -126,15 +126,6 @@ public class BingoGridHuman extends BingoGrid {
                     g2.setFont(font);
                 }
 
-                // writes "Human" below the board
-                if (row == grid.length - 1 && col == 1) {
-                    g2.setFont(font2);
-                    g2.setColor(Color.LIGHT_GRAY);
-                    g2.drawString("Human", (int) square.getX() + SQUARE_SIZE / 4 - 5,
-                            (int) square.getY() + SQUARE_SIZE + ((SQUARE_SIZE / 3) * 2));
-                    g2.setFont(font);
-                    g2.setColor(Color.BLACK);
-                }
             }
         }
 

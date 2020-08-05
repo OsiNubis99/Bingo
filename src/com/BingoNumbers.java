@@ -1,6 +1,5 @@
 package com;
 
-
 /**
  * Write a description of class BingoNumbers here.
  * 
@@ -12,28 +11,28 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import java.awt.*;
-public class BingoNumbers extends JComponent
-{
-    /**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-	public static ArrayList <Integer> numbers = new ArrayList<Integer>();
 
-    //     /**
-    //      * Constructs BingoNumbers while generating a number
-    //      */
-    //     public BingoNumbers() {
-    //         generateNumber();
-    //     }
+public class BingoNumbers extends JComponent {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    public static ArrayList<Integer> numbers = new ArrayList<Integer>();
+
+    // /**
+    // * Constructs BingoNumbers while generating a number
+    // */
+    // public BingoNumbers() {
+    // generateNumber();
+    // }
 
     /**
      * Checks if <code>value</code> already exists in the ArrayList
+     * 
      * @param value the value to check
-     * @return  true if a duplicate is found
+     * @return true if a duplicate is found
      */
-    public boolean isFound(int value)
-    {
+    public boolean isFound(int value) {
         for (int x : numbers) {
             if (value == (int) x)
                 return true;
@@ -44,29 +43,41 @@ public class BingoNumbers extends JComponent
     /**
      * Creates a unique number from 1-75 and puts it into the ArrayList
      */
-    public void generateNumber() {
+    public int generateNumber() {
         boolean exit = false;
         Random generator = new Random();
-
+        int newNumber = 0;
         while (!exit && numbers.size() != 75) {
-            int newNumber = generator.nextInt(75) + 1;  //1 - 75
+            newNumber = generator.nextInt(75) + 1; // 1 - 75
             if (!isFound(newNumber)) {
-                numbers.add(newNumber);
                 exit = true;
             }
         }
+        return newNumber;
+    }
+
+    /**
+     * Creates a unique number from 1-75 and puts it into the ArrayList
+     */
+    public boolean addNumber(int newNumber) {
+        if (!isFound(newNumber)) {
+            numbers.add(newNumber);
+            return true;
+        }
+        return false;
     }
 
     /**
      * Displays the numbers
+     * 
      * @param g the graphics object
      */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        //font anti-aliasing
+        // font anti-aliasing
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        
+
         int fontSize = 45;
         int bigFont = 80;
         Font font = new Font("SansSerif", Font.PLAIN, fontSize);

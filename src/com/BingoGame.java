@@ -20,23 +20,23 @@ import java.awt.event.ActionEvent;
 
 public class BingoGame extends JFrame {
     private static final long serialVersionUID = 1L;
-    public static final int WIDTH = 900;
-    public static final int LENGTH = 700;
+    public static int WIDTH = 520;
+    public static int LENGTH = 650;
 
     private JPanel panel;
-    private JButton reset;
     private JButton bingo;
-    private JButton nextNum;
     private JButton start;
-    private JButton stop;
     private Container layout;
     private BingoNumbers bingoNumbers;
     private BingoGridHuman humanGrid;
     private BingoGridComputer computerGrid;
 
+    private String readPort;
+    private String writePort;
+    private Boolean pivo;
+
     private MouseListener mouseListener;
     private ActionListener timer;
-    private ActionListener buttonListener;
     private final int DELAY;
     private boolean startGame = false;
     private boolean winner = false;
@@ -44,64 +44,50 @@ public class BingoGame extends JFrame {
     /**
      * Constructs the game window
      */
-    public BingoGame() {
-        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+    public BingoGame(String read, String write, String mode) {
+        setBounds(300, 40, WIDTH, LENGTH);
+        readPort = read;
+        writePort = write;
 
         panel = new JPanel();
 
         // JButtons
-        reset = new JButton("Reset");
         bingo = new JButton("Bingo!");
-        nextNum = new JButton("Call Next Number");
         start = new JButton("Start");
-        stop = new JButton("Stop");
 
         // add JButtons to the panel
         panel.add(start);
-        panel.add(stop);
-        panel.add(reset);
         panel.add(bingo);
-        panel.add(nextNum);
 
         // creates tooltips for buttons
-        reset.setToolTipText("Resets the game");
         bingo.setToolTipText("I have bingo!");
-        nextNum.setToolTipText("Call next number");
         start.setToolTipText("Starts/resumes the game");
-        stop.setToolTipText("Stops/pauses the game");
 
         // adds ActionListeners to buttons
-        buttonListener = new ButtonListener();
-        reset.addActionListener(buttonListener);
-        bingo.addActionListener(buttonListener);
-        nextNum.addActionListener(buttonListener);
-        start.addActionListener(buttonListener);
-        stop.addActionListener(buttonListener);
+        bingo.addActionListener(new ButtonListener());
+        start.addActionListener(new ButtonListener());
 
         layout = this.getContentPane();
         layout.add(panel, "South");
         setVisible(true);
 
-        mouseListener = new MouseClickListener();
         timer = new MyTimer();
         DELAY = 2500;
         Timer t = new Timer(DELAY, timer);
         t.start();
 
-        humanGrid = new BingoGridHuman();
-        computerGrid = new BingoGridComputer();
-        bingoNumbers = new BingoNumbers();
-
-        add(humanGrid);
-        setVisible(true);
-
+        // humanGrid = new BingoGridHuman(100);
+        // add(humanGrid);
+        // setVisible(true);
+        computerGrid = new BingoGridComputer(100);
         add(computerGrid);
         setVisible(true);
-
+        bingoNumbers = new BingoNumbers();
         add(bingoNumbers);
         setVisible(true);
 
-        humanGrid.addMouseListener(mouseListener);
+        mouseListener = new MouseClickListener();
+        // humanGrid.addMouseListener(mouseListener);
         setVisible(true);
     }
 
@@ -109,14 +95,16 @@ public class BingoGame extends JFrame {
     class MyTimer implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (startGame && !winner) {
-                bingoNumbers.generateNumber();
-                humanGrid.isCalled();
+                int number;// = al que viene del rs232
+                number = bingoNumbers.generateNumber();
+                bingoNumbers.addNumber(number);
+                // humanGrid.isCalled();
                 computerGrid.highlightSquare();
                 if (computerGrid.checkWin()) {
                     computerGrid.setWinnerMessage("WINNER: COMPUTER");
                     winner = true;
                 }
-                humanGrid.setWinnerMessage("");
+                // humanGrid.setWinnerMessage("");
                 bingoNumbers.repaint();
                 computerGrid.repaint();
             }
@@ -126,9 +114,9 @@ public class BingoGame extends JFrame {
     // The Mouse listener
     class MouseClickListener implements MouseListener {
         public void mousePressed(MouseEvent event) {
-            int x = event.getX();
-            int y = event.getY();
-            humanGrid.highlightSquare(x, y);
+            // int x = event.getX();
+            // int y = event.getY();
+            // humanGrid.highlightSquare(x, y);
         }
 
         public void mouseReleased(MouseEvent event) {
@@ -148,38 +136,11 @@ public class BingoGame extends JFrame {
     class ButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             Object source = event.getSource();
-            if (source == reset) { // resets the boards and the bingo number callings
-                humanGrid.initializeGrid();
-                computerGrid.initializeGrid();
-                BingoNumbers.numbers.clear();
-                winner = false;
-            } else if (source == bingo) { // checks if the human grid has won
-                if (!winner) {
-                    if (humanGrid.checkWin()) {
-                        humanGrid.setWinnerMessage("WINNER: HUMAN");
-                        winner = true;
-                    } else {
-                        humanGrid.setWinnerMessage("Sorry, you haven't gotten bingo.");
-                    }
-                }
-            } else if (source == nextNum) { // calls the next bingo number and checks for winner
-                if (!winner) {
-                    bingoNumbers.generateNumber();
-                    humanGrid.setWinnerMessage("");
-                    computerGrid.highlightSquare();
-                    humanGrid.isCalled();
-                    if (computerGrid.checkWin()) {
-                        computerGrid.setWinnerMessage("WINNER: COMPUTER");
-                        winner = true;
-                    }
-                }
-            } else if (source == start) { // starts the game
+            if (source == start) { // starts the game
                 startGame = true;
-            } else if (source == stop) { // stops/pauses the game
-                startGame = false;
             }
             computerGrid.highlightSquare();
-            humanGrid.repaint();
+            // humanGrid.repaint();
             computerGrid.repaint();
             bingoNumbers.repaint();
             layout.repaint();

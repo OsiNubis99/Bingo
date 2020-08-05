@@ -18,10 +18,10 @@ public class BingoGridComputer extends BingoGrid {
      */
     private static final long serialVersionUID = 1L;
 
-    public BingoGridComputer() {
+    public BingoGridComputer(int x) {
         super();
 
-        indentX = 520;
+        indentX = x;
         indentY = 250;
         initializeGrid();
     }
@@ -79,16 +79,6 @@ public class BingoGridComputer extends BingoGrid {
                     g2.drawString(BINGO[col], (int) square.getX() + (SQUARE_SIZE / 6),
                             (int) square.getY() - (SQUARE_SIZE / 4));
                     g2.setFont(font);
-                }
-
-                // writes "Computer" below the board
-                if (row == grid.length - 1 && col == 0) {
-                    g2.setFont(font2);
-                    g2.setColor(Color.LIGHT_GRAY);
-                    g2.drawString("Computer", (int) square.getX() + (SQUARE_SIZE / 3) * 2,
-                            (int) square.getY() + SQUARE_SIZE + ((SQUARE_SIZE / 3) * 2));
-                    g2.setFont(font);
-                    g2.setColor(Color.BLACK);
                 }
             }
         }
