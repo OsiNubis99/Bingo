@@ -18,25 +18,28 @@ class Menu extends JFrame implements ActionListener {
     private JLabel title;
     private JLabel LRead;
     private JLabel LWrite;
+    private JLabel LCantidad;
     private JLabel gender;
     private JRadioButton line;
     private JRadioButton full;
     private ButtonGroup gengp;
     private JComboBox read;
     private JComboBox write;
+    private JComboBox cantidad;
     private JButton close;
     private JButton start;
-    private JTextArea tout;
 
     private String ports[] = { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10", "COM11",
             "COM12", "COM13", "COM14", "COM15", "COM16", "COM17", "COM18", "COM19", "COM20", "COM21", "COM22", "COM23",
             "COM24", "COM25", "COM26", "COM27", "COM28", "COM29", "COM30", "COM31" };
 
+    private String cantidades[] = { "1", "2" };
+
     // constructor, to initialize the components
     // with default values.
     public Menu() {
         setTitle("Bingo Game");
-        setBounds(300, 90, 475, 400);
+        setBounds(300, 90, 475, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -73,24 +76,36 @@ class Menu extends JFrame implements ActionListener {
         write.setLocation(250, 150);
         c.add(write);
 
+        LCantidad = new JLabel("Cantidad");
+        LCantidad.setFont(new Font("Arial", Font.PLAIN, 20));
+        LCantidad.setSize(100, 20);
+        LCantidad.setLocation(100, 200);
+        c.add(LCantidad);
+
+        cantidad = new JComboBox(cantidades);
+        cantidad.setFont(new Font("Arial", Font.PLAIN, 15));
+        cantidad.setSize(100, 20);
+        cantidad.setLocation(250, 200);
+        c.add(cantidad);
+
         gender = new JLabel("Game mode");
         gender.setFont(new Font("Arial", Font.PLAIN, 20));
         gender.setSize(125, 20);
-        gender.setLocation(165, 200);
+        gender.setLocation(165, 250);
         c.add(gender);
 
         line = new JRadioButton("One Line");
         line.setFont(new Font("Arial", Font.PLAIN, 15));
         line.setSelected(true);
         line.setSize(100, 20);
-        line.setLocation(100, 250);
+        line.setLocation(100, 300);
         c.add(line);
 
         full = new JRadioButton("Full Card");
         full.setFont(new Font("Arial", Font.PLAIN, 15));
         full.setSelected(false);
         full.setSize(100, 20);
-        full.setLocation(250, 250);
+        full.setLocation(250, 300);
         c.add(full);
 
         gengp = new ButtonGroup();
@@ -100,14 +115,14 @@ class Menu extends JFrame implements ActionListener {
         close = new JButton("Close");
         close.setFont(new Font("Arial", Font.PLAIN, 15));
         close.setSize(100, 20);
-        close.setLocation(100, 300);
+        close.setLocation(100, 350);
         close.addActionListener(this);
         c.add(close);
 
         start = new JButton("Start");
         start.setFont(new Font("Arial", Font.PLAIN, 15));
         start.setSize(100, 20);
-        start.setLocation(250, 300);
+        start.setLocation(250, 350);
         start.addActionListener(this);
         c.add(start);
         setVisible(true);
@@ -120,15 +135,21 @@ class Menu extends JFrame implements ActionListener {
         if (e.getSource() == start) {
             String gameMode;
             if (line.isSelected())
-                gameMode = "game mode : line" + "\n";
+                gameMode = "line";
             else
-                gameMode = "game mode : full" + "\n";
+                gameMode = "full";
             String readPort = (String) read.getSelectedItem();
             String writePort = (String) write.getSelectedItem();
             if (readPort != writePort) {
-                BingoGame game = new BingoGame(readPort, writePort, gameMode);
+                BingoGame game = new BingoGame(gameMode, (String) cantidad.getSelectedItem());
                 game.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 game.setVisible(true);
+                int number = game.generateNumber();
+                for (int i = 1; i < 76; i++) {
+                    if (game.addNumber(i))
+                        break;
+
+                }
                 dispose();
                 setVisible(false);
             }

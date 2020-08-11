@@ -74,11 +74,13 @@ public class BingoGrid extends JComponent {
      * Checks if the grid has won according to the rules of Bingo return true if
      * grid has won
      */
-    public boolean checkWin() {
+    public boolean checkWin(String gameMode) {
         int winningNumber = 5;
         int count;
+        int count2;
 
         // checks the rows
+        count2 = 0;
         for (int row = 0; row < grid.length; row++) {
             count = 0;
             for (int col = 0; col < grid[0].length; col++) {
@@ -87,13 +89,19 @@ public class BingoGrid extends JComponent {
                     count++;
                 }
                 if (count == winningNumber) {
-                    return true;
+                    count2++;
+                    if (gameMode == "line")
+                        return true;
                 }
             }
             this.removeIsWinnerMark();
         }
+        if (count2 == winningNumber) {
+            return true;
+        }
 
         // checks the columns
+        count2 = 0;
         for (int col = 0; col < grid[0].length; col++) {
             count = 0;
             for (int row = 0; row < grid.length; row++) {
@@ -102,10 +110,15 @@ public class BingoGrid extends JComponent {
                     count++;
                 }
                 if (count == winningNumber) {
-                    return true;
+                    count2++;
+                    if (gameMode == "line")
+                        return true;
                 }
             }
             this.removeIsWinnerMark();
+        }
+        if (count2 == winningNumber) {
+            return true;
         }
 
         // check diagonal from top-left to bottom-right
@@ -117,7 +130,8 @@ public class BingoGrid extends JComponent {
                 count++;
             }
             if (count == winningNumber) {
-                return true;
+                if (gameMode == "line")
+                    return true;
             }
         }
         this.removeIsWinnerMark();
@@ -131,7 +145,8 @@ public class BingoGrid extends JComponent {
                 count++;
             }
             if (count == winningNumber) {
-                return true;
+                if (gameMode == "line")
+                    return true;
             }
         }
         this.removeIsWinnerMark();
