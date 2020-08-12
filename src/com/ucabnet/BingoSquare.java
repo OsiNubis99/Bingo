@@ -1,4 +1,4 @@
-package com;
+package com.ucabnet;
 
 import java.awt.Rectangle;
 import java.util.Random;

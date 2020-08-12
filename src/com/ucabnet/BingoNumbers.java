@@ -1,4 +1,4 @@
-package com;
+package com.ucabnet;
 
 /**
  * Write a description of class BingoNumbers here.

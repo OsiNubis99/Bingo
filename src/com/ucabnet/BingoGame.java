@@ -1,4 +1,6 @@
-package com;
+package com.ucabnet;
+
+import com.fazecast.jSerialComm.SerialPort;
 
 import javax.swing.JFrame;
 
@@ -20,8 +22,7 @@ public class BingoGame extends JFrame {
 
     private String gameMode;
     private String cantidad;
-
-    private boolean winner = false;
+    private int winner = 0;
 
     /**
      * Constructs the game window
@@ -34,6 +35,8 @@ public class BingoGame extends JFrame {
             WIDTH = 940;
         }
         setBounds(300, 40, WIDTH, LENGTH);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         gameMode = mode;
         game1 = new BingoGridGraphics(100);
         add(game1);
@@ -46,27 +49,25 @@ public class BingoGame extends JFrame {
         bingoNumbers = new BingoNumbers();
         add(bingoNumbers);
         setVisible(true);
-
-        setVisible(true);
     }
 
     public int generateNumber() {
         return bingoNumbers.generateNumber();
     }
 
-    public Boolean addNumber(int number) {
+    public int addNumber(int number) {
         bingoNumbers.addNumber(number);
         game1.highlightSquare();
         if (game1.checkWin(gameMode)) {
             game1.setWinnerMessage("WINNER");
-            winner = true;
+            winner = 1;
         }
         game1.repaint();
         if (cantidad == "2") {
             game2.highlightSquare();
             if (game2.checkWin(gameMode)) {
                 game2.setWinnerMessage("WINNER");
-                winner = true;
+                winner = 1;
             }
             game2.repaint();
         }

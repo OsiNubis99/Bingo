@@ -1,4 +1,4 @@
-package com;
+package com.ucabnet;
 
 import javax.swing.JComponent;
 import java.util.ArrayList;

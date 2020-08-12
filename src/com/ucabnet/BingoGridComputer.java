@@ -1,4 +1,4 @@
-package com;
+package com.ucabnet;
 
 import java.awt.RenderingHints;
 import java.awt.Graphics;
@@ -12,13 +12,13 @@ import java.awt.Color;
  * @author Andres Hurtado\@OsiNubis99
  * @version 1.0
  */
-public class BingoGridGraphics extends BingoGrid {
+public class BingoGridComputer extends BingoGrid {
     /**
-     * Constructs BingoGridGraphics
+     * Constructs BingoGridComputer
      */
     private static final long serialVersionUID = 1L;
 
-    public BingoGridGraphics(int x) {
+    public BingoGridComputer(int x) {
         super();
 
         indentX = x;
@@ -53,7 +53,7 @@ public class BingoGridGraphics extends BingoGrid {
                 if (square.getIsClicked()) {
                     g2.setColor(Color.PINK);
                     if (square.getIsWinner()) {
-                        g2.setColor(Color.BLUE);
+                        g2.setColor(Color.RED);
                     }
                     g2.fill(square);
                     g2.setColor(Color.BLACK);
@@ -85,7 +85,7 @@ public class BingoGridGraphics extends BingoGrid {
 
         // prints message if grid has won
         g2.setColor(Color.RED);
-        g2.drawString(winnerMessage, BingoGame.WIDTH / 2 - 55, 190);
+        g2.drawString(winnerMessage, 545, 190);
     }
 
     public void highlightSquare() {

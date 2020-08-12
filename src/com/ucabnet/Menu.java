@@ -1,6 +1,7 @@
-package com;
+package com.ucabnet;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -42,7 +43,6 @@ class Menu extends JFrame implements ActionListener {
         setBounds(300, 90, 475, 450);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-
         c = getContentPane();
         c.setLayout(null);
 
@@ -141,15 +141,7 @@ class Menu extends JFrame implements ActionListener {
             String readPort = (String) read.getSelectedItem();
             String writePort = (String) write.getSelectedItem();
             if (readPort != writePort) {
-                BingoGame game = new BingoGame(gameMode, (String) cantidad.getSelectedItem());
-                game.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                game.setVisible(true);
-                int number = game.generateNumber();
-                for (int i = 1; i < 76; i++) {
-                    if (game.addNumber(i))
-                        break;
-
-                }
+                new Messenger(readPort, writePort, gameMode, (String) cantidad.getSelectedItem());
                 dispose();
                 setVisible(false);
             }
